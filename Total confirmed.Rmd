@@ -1,0 +1,152 @@
+---
+title: "Average Recoveries Cases by covid19 in Nigeria"
+author: "CONFIDENCE"
+date: "2024-07-16"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+
+#Read the dataset
+
+```{r}
+Covid_data <- read.csv("C:/Users/user/Downloads/covid19_nigeria_states (1).csv")
+```
+
+# Group the states into regions
+
+```{r}
+Regions <- list(
+  "North Central" = c("Benue","Kogi","Kwara","Nasarawa","Niger","Plateau","FCT"),
+ "North West" = c("Jigawa","Kaduna","Kano","Katsina","Kebbi","Sokoto","Zamfara"),
+ "North East" = c("Adamawa","Bauchi","Borno","Gombe","Taraba","Yobe"),
+ "South East"= c("Abia","Anambra","Ebonyi","Enugu","Imo"),
+ "South South" = c("Akwa Ibom", "Bayelsa","CrossRiver","Delta","Edo","Rivers"),
+ "South West" = c("Ekiti","Lagos","Ogun","Ondo","Osun","Oyo")
+ )
+```
+
+#Convert the Regions list into a dataframe
+
+```{r}
+Regions_df <- do.call(rbind,lapply(names(Regions),function(Region) {
+  data.frame(states = Regions[[Region]],Region = Region,stringsAsFactors = FALSE)}))
+```
+
+#Merge the covid dataset with the regions dataframe
+
+```{r}
+Regional_set <- merge(Covid_data,Regions_df,by = "states")
+View(Regional_set)
+```
+
+#Summarise the data set
+
+```{r}
+summarised_regionset <- Regional_set %>% group_by(Region)%>%
+  summarise(
+    total_confirmed  = sum(total_confirmed,na.rm = TRUE),
+    total_recoveries =sum(total_recoveries,na.rm = TRUE),
+    total_death      =sum(total_death,na.rm = TRUE),
+    new_confirmed    =sum(new_confirmed,na.rm = TRUE),
+    new_recoveries   =sum(new_recoveries,na.rm = TRUE),
+    new_death        =sum(new_death,na.rm = TRUE)
+  )
+```
+
+#summary for Confirmed
+
+```{r}
+Summary_Average <- Regional_set %>% group_by(Region) %>%
+  summarise( AVG_Total_Confirmed = mean(total_confirmed,na.rm = TRUE))
+```
+
+#find the mean of the total_confirmed
+
+```{r}
+mean_total_confirmed <- mean(Regional_set$total_confirmed )
+sd_total_confirmed <- sd(Regional_set$total_confirmed)
+```
+
+#Comparism between Regions
+
+```{r}
+North_West    <- subset(Regional_set, Region == "North West")$total_confirmed
+North_East    <- subset(Regional_set, Region == "North East")$total_confirmed
+South_West    <- subset(Regional_set, Region == "South West")$total_confirmed
+South_East    <- subset(Regional_set, Region == "South East")$total_confirmed
+South_South   <- subset(Regional_set, Region == "South South")$total_confirmed
+North_Central <- subset(Regional_set, Region =="North Central")$total_confirmed
+
+```
+
+#T-test
+
+```{r}
+T_Result   <- t.test(North_Central,South_South, alternative = "two.sided")
+T_Result1  <- t.test(North_Central,South_East,  alternative = "two.sided")
+T_Result2  <- t.test(North_Central,South_West,  alternative = "two.sided")
+T_Result3  <- t.test(North_Central,North_East,  alternative =  "two.sided")
+T_Result4  <- t.test(North_Central,North_West,  alternative = "two.sided")
+T_Result5  <- t.test(North_East,South_South,    alternative = "two.sided")
+T_Result6  <- t.test(North_East,South_East,     alternative = "two.sided")
+T_Result7  <- t.test(North_East,South_West,     alternative = "two.sided")
+T_Result8  <- t.test(North_East,North_West,     alternative = "two.sided")
+T_Result9  <- t.test(North_West,South_East,     alternative = "two.sided")
+T_Result10 <- t.test(North_West,South_South,    alternative = "two.sided")
+T_Result11 <- t.test(North_West,South_West,     alternative = "two.sided")
+T_Result12 <- t.test(South_South,South_East,    alternative = "two.sided")
+T_Result13 <- t.test(South_South,South_West,    alternative = "two.sided")
+T_Result14 <- t.test(South_West,South_East,     alternative = "two.sided")
+
+```
+
+print the Z-test
+
+```{r}
+print(T_Result)
+print(T_Result1)
+print(T_Result2)
+print(T_Result3)
+print(T_Result4)
+print(T_Result5)
+print(T_Result6)
+print(T_Result7)
+print(T_Result8)
+print(T_Result9)
+print(T_Result10)
+print(T_Result11)
+print(T_Result12)
+print(T_Result13)
+print(T_Result14)
+print(T_Result15)
+```
+
+#plot graph for total confirmed
+
+```{r}
+ggplot(summarised_regionset,aes(x=Region,y=total_confirmed,fill = Region))+
+  geom_bar(stat = "identity")+
+  theme_minimal()+
+  labs(title = "TOTAL CONFIRMED BY REGION",
+       x = "Region",
+       y = "Total Confirmed")+
+  theme(axis.text.x = element_text(angle = 270, hjust = 0.5))
+
+```
+
+#plot graph for average confirmed
+
+```{r}
+ggplot(Summary_Average,aes(x=Region,y = AVG_Total_Confirmed,fill = Region))+
+  geom_bar(stat = "identity")+
+  theme_minimal()+
+  labs(title = "AVERAGE TOTAL CONFIRMED BY REGION ",
+       x = "Region",
+       y = "Average Total Confirmed")+
+  theme(axis.text.x = element_text(angle = 45,hjust = 1))
+
+```
