@@ -1,4 +1,4 @@
-## Hi there 👋
+## Hi there 👋 I am working on the total and average recoveries cases based on the covid 19 data set.
 
 <!--
 **Chisom-Ojiaku/Chisom-Ojiaku** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
