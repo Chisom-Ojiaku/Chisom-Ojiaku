@@ -1,4 +1,5 @@
-## Hi there 👋 I am working on the total and average recoveries cases based on the covid 19 data set.
+## Hi there 👋 I am working on the total and average recoveries cases based on the covid 19 data set. This research is for nigeria covid case and was group into regions, nigeria has 6 region and from this analysis southwest region has the highest recovery case.
+
 
 <!--
 **Chisom-Ojiaku/Chisom-Ojiaku** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
