@@ -1,4 +1,4 @@
-## Hi there 👋 I am working on the total and average recoveries cases based on the covid 19 data set. This research is for nigeria covid case and was group into regions, nigeria has 6 region and from this analysis southwest region has the highest recovery case.
+## Hi there 👋 I am working on the total and average recoveries cases based on the covid 19 data set. This research is for nigeria covid case and was group into regions, nigeria has 6 region and from this analysis southwest regions has the highest recovery case.
 
 
 <!--
